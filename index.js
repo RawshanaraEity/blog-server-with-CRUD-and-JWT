@@ -32,12 +32,25 @@ async function run() {
     // await client.connect();
 
     const blogCollection = client.db('blogDB').collection('blogs');
+    const wishlistCollection = client.db("blogDB").collection("wishlist");
 
     app.get('/blogs', async(req, res) =>{
         const result = await blogCollection.find().toArray()
         // console.log(result)
         res.send(result)
       })
+
+
+         // post data in wishlist
+    app.post('/wishlist', async(req, res) =>{
+        const blogs = req.body;
+        const result = await wishlistCollection.insertOne(blogs);
+        console.log(result)
+        res.send(result)
+      })
+
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
