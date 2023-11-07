@@ -49,7 +49,11 @@ async function run() {
         res.send(result)
       })
 
-
+      app.get('/wishlist', async(req, res) =>{
+        const result = await wishlistCollection.find().toArray()
+        console.log(result)
+        res.send(result)
+      })
 
 
     // Send a ping to confirm a successful connection
