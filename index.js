@@ -36,6 +36,14 @@ async function run() {
 
 
     // get all blogs 
+    app.post('/blogs', async(req, res) =>{
+      const blog = req.body;
+      const result = await blogCollection.insertOne(blog);
+      // console.log(result)
+      res.send(result)
+    })
+
+
     app.get('/blogs', async(req, res) =>{
         const result = await blogCollection.find().toArray()
         // console.log(result)
