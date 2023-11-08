@@ -34,11 +34,42 @@ async function run() {
     const blogCollection = client.db('blogDB').collection('blogs');
     const wishlistCollection = client.db("blogDB").collection("wishlist");
 
+
+    // get all blogs 
     app.get('/blogs', async(req, res) =>{
         const result = await blogCollection.find().toArray()
         // console.log(result)
         res.send(result)
       })
+
+
+      // update blogs
+      app.put('/blogs/:id', async(req, res) => {
+      const id = req.params.id
+      const filter = {_id: new ObjectId(id)}
+      const options = { upsert: true }
+      const updatedBlog = req.body
+      console.log(updatedBlog)
+
+      const blog = {
+          $set: {
+              image: updatedBlog.image, 
+              title: updatedBlog.title, 
+              author_img: updatedBlog.author_img, 
+              author_name: updatedBlog.author_name, 
+              category: updatedBlog.category, 
+              short_description: updatedBlog.short_description, 
+              long_description: updatedBlog.long_description, 
+              date: updatedBlog.date, 
+              current_time: updatedBlog.current_time, 
+          }
+      }
+
+      const result = await blogCollection.updateOne(filter, blog, options);
+      res.send(result);
+  })
+
+
 
 
          // post data in wishlist
