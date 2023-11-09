@@ -9,15 +9,12 @@ app.use(cors());
 app.use(express.json());
 
 
-
-
-
 const { ServerApiVersion, MongoClient, ObjectId } = require('mongodb');
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bkpsd7x.mongodb.net/?retryWrites=true&w=majority`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -35,7 +32,7 @@ async function run() {
     const wishlistCollection = client.db("blogDB").collection("wishlist");
 
 
-    // get all blogs 
+    // post  blogs 
     app.post('/blogs', async(req, res) =>{
       const blog = req.body;
       const result = await blogCollection.insertOne(blog);
@@ -43,7 +40,7 @@ async function run() {
       res.send(result)
     })
 
-
+// get all blogs
     app.get('/blogs', async(req, res) =>{
         const result = await blogCollection.find().toArray()
         // console.log(result)
@@ -77,9 +74,6 @@ async function run() {
       res.send(result);
   })
 
-
-
-
          // post data in wishlist
     app.post('/wishlist', async(req, res) =>{
         const blogs = req.body;
@@ -103,9 +97,8 @@ async function run() {
         res.send(result)
     })
   
-
-
     // Send a ping to confirm a successful connection
+
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
